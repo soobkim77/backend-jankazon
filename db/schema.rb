@@ -10,10 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_11_012356) do
+ActiveRecord::Schema.define(version: 2021_06_25_211120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cart_items", force: :cascade do |t|
+    t.bigint "cart_id", null: false
+    t.bigint "item_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["item_id"], name: "index_cart_items_on_item_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_carts_on_user_id"
+  end
 
   create_table "items", force: :cascade do |t|
     t.string "name"
@@ -24,6 +40,7 @@ ActiveRecord::Schema.define(version: 2021_06_11_012356) do
     t.string "category"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "quantity"
     t.index ["user_id"], name: "index_items_on_user_id"
   end
 
@@ -43,6 +60,9 @@ ActiveRecord::Schema.define(version: 2021_06_11_012356) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "cart_items", "carts"
+  add_foreign_key "cart_items", "items"
+  add_foreign_key "carts", "users"
   add_foreign_key "items", "users"
   add_foreign_key "purchases", "items"
   add_foreign_key "purchases", "users"

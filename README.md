@@ -22,3 +22,8 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+cart belongs to a user
+cart has many items through cartItems
+user has purchases
+purchases belong to a cart
